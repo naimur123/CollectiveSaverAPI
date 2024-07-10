@@ -96,9 +96,11 @@ class UserController extends Controller
         // // $request->user()->access_token->delete();
         // $this->apiSuccess("Logout Successfull");
         // return $this->apiOutput();
-        // $user = auth('sanctum')->user();
-        $user = $request->user()->tokens();
-        $this->data = $user;
+        $user = auth('sanctum')->user();
+
+        // dd($user);
+        // $user = $request->user()->tokens();
+        $this->data = $user->tokens;
         // 
     //     foreach ($user->tokens as $token) {
     //         $token->delete();
