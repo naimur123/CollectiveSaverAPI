@@ -46,4 +46,8 @@ class User extends Authenticatable
 
         return $nextId;
     }
+
+    public function user_groups(){
+        return $this->hasMany(Groups::class, 'user_id');
+    }
 }

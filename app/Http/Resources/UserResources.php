@@ -49,6 +49,7 @@ class UserResources extends JsonResource
             "is_admin"          => $this->is_admin,
             "is_active"         => $this->is_active,
             "phone"             => $this->phone,
+            'user_groups'       => GroupResources::collection($this->user_groups)
         ]);
     }
 }

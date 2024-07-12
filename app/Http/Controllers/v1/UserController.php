@@ -49,8 +49,10 @@ class UserController extends Controller
                 DB::rollBack();
             }
             $this->apiSuccess("User Added Successfully");
-            $this->data = (new UserResources($data));
-            return $this->apiOutput();
+            // $this->data = (new UserResources($data));
+            // return $this->apiOutput();
+            /* Automatically login if registered */
+            return $this->login($request);
 
         }catch(Exception $e){
             return $this->apiOutput($this->getError( $e), 500);
@@ -64,7 +66,7 @@ class UserController extends Controller
             $validator = Validator::make($request->all(), [
                 "phone"     => ["required", "string", "min:11", "max:11"],
                 "password"  => ["required", "string", "min:4", "max:40"]
-            ]); 
+            ]);
             if($validator->fails()){
                 return $this->apiOutput($this->getValidationError($validator), 400);
             }
@@ -90,23 +92,12 @@ class UserController extends Controller
     }
 
     public function logout(Request $request){
-        
-        // Session::flush('access_token');
-        // // $user = $request->user();
-        // // $request->user()->access_token->delete();
-        // $this->apiSuccess("Logout Successfull");
-        // return $this->apiOutput();
         $user = auth('sanctum')->user();
+        foreach ($user->tokens as $token) {
+            $token->delete();
+        }
+        $this->apiSuccess("Logout Successfull");
+        return $this->apiOutput();
 
-        // dd($user);
-        // $user = $request->user()->tokens();
-        $this->data = $user->tokens;
-        // 
-    //     foreach ($user->tokens as $token) {
-    //         $token->delete();
-    //    }
-    //    $this->apiSuccess("Logout Successfull");
-       return $this->apiOutput();
-   
     }
 }
