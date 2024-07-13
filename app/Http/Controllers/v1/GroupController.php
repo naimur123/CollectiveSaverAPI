@@ -39,7 +39,7 @@ class GroupController extends Controller
     }
 
     /* Create Group */
-    public function create_group(Request $request){
+    public function store_group(Request $request){
         try{
             $validator = Validator::make($request->all(), [
                 "name"     => ["required", "string", "min:4", "max:40"],
@@ -58,8 +58,13 @@ class GroupController extends Controller
                 }
 
                 DB::beginTransaction();
-                $data = $this->getModel();
-                $data->user_id               = $request->user()->id;
+                if(!empty($request->id)){
+                    $data = Groups::find($request->id);
+                }
+                else{
+                    $data = $this->getModel();
+                }
+                $data->user_id               = $request->user()->id ?? $data->user_id;
                 $data->name                  = $request->name;
                 $data->account_type          = $request->account_type;
                 $data->account_name          = $request->account_name;
@@ -75,12 +80,25 @@ class GroupController extends Controller
                 return $this->apiOutput($this->getError( $e), 500);
                 DB::rollBack();
             }
-            $this->apiSuccess("Group Created Successfully");
+            if(!empty($request->id))  $this->apiSuccess("Group Updated Successfully");
+            else $this->apiSuccess("Group Created Successfully");
             $this->data = (new GroupResources($data));
             return $this->apiOutput();
 
         }catch(Exception $e){
             return $this->apiOutput($this->getError($e), 500);
         }
+    }
+
+    /* Delete Group */
+    public function delete_group(Request $request){
+        if(Groups::destroy($request->id)){
+            $this->apiSuccess();
+            return $this->apiOutput("Groups Deleted Successfully", 200);
+        }
+        else{
+            return $this->apiOutput("Failed", 500);
+        }
+
     }
 }

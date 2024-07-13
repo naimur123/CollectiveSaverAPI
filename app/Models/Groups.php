@@ -46,4 +46,8 @@ class Groups extends Model
     public function groups(){
         return $this->belongsTo(User::class, 'user_id');
     }
+
+    public function group_funds(){
+        return $this->hasMany(Fund::class, 'group_id');
+    }
 }

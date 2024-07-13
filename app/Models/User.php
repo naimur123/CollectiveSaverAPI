@@ -50,4 +50,8 @@ class User extends Authenticatable
     public function user_groups(){
         return $this->hasMany(Groups::class, 'user_id');
     }
+
+    public function user_funds(){
+        return $this->hasMany(Fund::class, 'user_id');
+    }
 }
