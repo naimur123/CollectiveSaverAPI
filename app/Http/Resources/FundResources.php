@@ -44,7 +44,7 @@ class FundResources extends JsonResource
         return $this->filter([
             "id"                    => $this->id,
             "user_id"               => $this->user_id,
-            "group_id "             => $this->group_id ,
+            "group_id"              => $this->group_id,
             "year"                  => $this->year,
             "month"                 => $this->month,
             "day"                   => $this->day,

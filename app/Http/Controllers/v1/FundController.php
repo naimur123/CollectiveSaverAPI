@@ -5,6 +5,7 @@ namespace App\Http\Controllers\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\FundResources;
 use App\Models\Fund;
+use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -93,6 +94,40 @@ class FundController extends Controller
             }catch(Exception $e){
                 return $this->apiOutput($this->getError($e), 500);
             }
+        }
+
+        /* Get user fund */
+        public function user_fund(Request $request){
+            $user_id = $request->user()->id;
+
+            $funds = Fund::whereHas('users', function($query) use ($user_id) {
+                $query->where('id', $user_id);
+            })->get();
+
+            $this->apiSuccess("Individual Fund Loaded Successfully");
+            $fund_data = [];
+            foreach($funds as $fund){
+                $fund_data[] = new FundResources($fund);
+            }
+            $this->data = $fund_data;
+            return $this->apiOutput();
+        }
+
+        /* Get user group fund */
+        public function user_group_fund(Request $request){
+            $user_id = $request->user()->id;
+
+            $funds = Fund::whereHas('groups', function($query) use ($user_id) {
+                $query->where('user_id', $user_id);
+            })->get();
+
+            $this->apiSuccess("Group Fund Loaded Successfully");
+            $fund_data = [];
+            foreach($funds as $fund){
+                $fund_data[] = new FundResources($fund);
+            }
+            $this->data = $fund_data;
+            return $this->apiOutput();
         }
 
 }
