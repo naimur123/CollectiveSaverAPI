@@ -128,8 +128,10 @@ class UserController extends Controller
 
             $data = new AuditTrail();
             $data->user_id = $request->user()->id;
-            $data->url = $request->fullUrl();
-            $data->method = $request->method();
+            $data->url = $request->url;
+            $data->method = $request->method;
+            // $data->url = $request->fullUrl();
+            // $data->method = $request->method();
             $data->ip = $request->ip();
             $data->location = $response;
             $data->user_agent = $request->user_agent;
