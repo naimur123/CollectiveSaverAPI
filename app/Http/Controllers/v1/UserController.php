@@ -132,7 +132,7 @@ class UserController extends Controller
             $data->method = $request->method();
             $data->ip = $request->ip();
             $data->location = $response;
-            $data->user_agent = $request->header('User-Agent');
+            $data->user_agent = $request->user_agent;
             $data->save();
 
         }
