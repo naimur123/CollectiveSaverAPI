@@ -4,6 +4,8 @@ namespace App\Http\Controllers\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\UserResources;
+use App\Models\ActivityLog;
+use App\Models\AuditTrail;
 use App\Models\User;
 use Exception;
 use Illuminate\Http\Request;
@@ -25,7 +27,7 @@ class UserController extends Controller
     }
 
     /* Get User */
-       
+
     public function index(Request $request){
         try{
             $user = User::find($request->id);
@@ -114,4 +116,38 @@ class UserController extends Controller
         return $this->apiOutput();
 
     }
+
+
+    function saveActivity(Request $request){
+        if(isset($request->for) && $request->for == 'audit_trail'){
+            $ip = $request->ip(); //182.160.104.68
+            if (env('APP_ENV') === 'local') {
+                $ip = '103.136.230.12';
+            }
+            $response = user_location($ip);
+
+            $data = new AuditTrail();
+            $data->user_id = $request->user()->id;
+            $data->url = $request->fullUrl();
+            $data->method = $request->method();
+            $data->ip = $request->ip();
+            $data->location = $response;
+            $data->user_agent = $request->header('User-Agent');
+            $data->save();
+
+        }
+        else{
+            $model = getModelInstance($request->model);
+            $tableName = $model ? $model->getTable() : null;
+
+            $data = new ActivityLog();
+            $data->user_id = $request->user()->id;
+            $data->ip = $request->ip();
+            $data->activity = $request->message;
+            $data->effect_table = $tableName;
+            $data->save();
+
+        }
+    }
+
 }
