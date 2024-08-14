@@ -24,6 +24,20 @@ class UserController extends Controller
         return $this->apiOutput('Test result Successfull');
     }
 
+    /* Get User */
+       
+    public function index(Request $request){
+        try{
+            $user = User::find($request->id);
+            $this->data = new UserResources($user);
+            $this->apiSuccess("User Loaded Successfully");
+            return $this->apiOutput();
+
+        }catch(Exception $e){
+            return $this->apiOutput($this->getError($e), 500);
+        }
+    }
+
     /* User Registration */
     public function register(Request $request){
         try{

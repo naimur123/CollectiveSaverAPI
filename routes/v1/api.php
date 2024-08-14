@@ -13,6 +13,8 @@ Route::post('/login',[UserController::class, 'login']);
 Route::middleware(['auth:sanctum', 'token_expiration'])->group(function(){
    Route::post('/logout',[UserController::class, 'logout']);
 
+   /* Get User */
+   Route::get('/get_user/{id}',[UserController::class, 'index']);
 
    /* Group Create Edit Delete */
    Route::get('/groups/{id}',[GroupController::class, 'index']);
