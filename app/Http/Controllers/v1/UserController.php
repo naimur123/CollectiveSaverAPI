@@ -64,11 +64,11 @@ class UserController extends Controller
                 return $this->apiOutput($this->getError( $e), 500);
                 DB::rollBack();
             }
-            $this->apiSuccess("User Added Successfully");
+            $this->apiSuccess("Successfully Registered");
             // $this->data = (new UserResources($data));
-            // return $this->apiOutput();
+            return $this->apiOutput();
             /* Automatically login if registered */
-            return $this->login($request);
+            // return $this->login($request);
 
         }catch(Exception $e){
             return $this->apiOutput($this->getError( $e), 500);
