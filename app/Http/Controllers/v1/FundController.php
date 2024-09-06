@@ -21,7 +21,6 @@ class FundController extends Controller
         /* Get Fund */
         public function index(Request $request){
             try{
-
                 $fund = Fund::find($request->id);
                 $this->data = new FundResources($fund);
                 $this->apiSuccess("Fund Loaded Successfully");
