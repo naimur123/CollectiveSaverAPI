@@ -43,7 +43,6 @@ class GroupResources extends JsonResource
     {
         return $this->filter([
             "id"                    => $this->id,
-            // "user_id"               => new UserResources($this->groups),
             "user_id"               => $this->user_id,
             "group_identifications" => $this->group_identifications,
             "name"                  => $this->name,

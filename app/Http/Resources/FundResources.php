@@ -45,6 +45,7 @@ class FundResources extends JsonResource
             "id"                    => $this->id,
             "user_id"               => $this->user_id,
             "group_id"              => $this->group_id,
+            'group_info'            => new GroupResources($this->groups),
             "year"                  => $this->year,
             "month"                 => $this->month,
             "day"                   => $this->day,
