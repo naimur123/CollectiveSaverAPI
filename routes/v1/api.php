@@ -29,7 +29,7 @@ Route::middleware(['auth:sanctum', 'token_expiration'])->group(function(){
    Route::post('/delete_group/{id}',[GroupController::class, 'delete_group']);
 
    /* Fund Create Edit Delete */
-   Route::get('/fund',[FundController::class, 'index']);
+   Route::post('/fund',[FundController::class, 'index']);
    Route::get('/user_group_fund',[FundController::class, 'user_group_fund']);
    Route::get('/user_fund',[FundController::class, 'user_fund']);
    Route::post('/store_fund',[FundController::class, 'store_fund']);
