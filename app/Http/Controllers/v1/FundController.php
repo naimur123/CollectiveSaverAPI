@@ -118,7 +118,7 @@ class FundController extends Controller
 
             $funds = Fund::whereHas('groups', function($query) use ($user_id) {
                 $query->where('user_id', $user_id);
-            })->get();
+            })->orderBy('group_id')->get();
 
             $this->apiSuccess("Group Fund Loaded Successfully");
             $fund_data = [];
