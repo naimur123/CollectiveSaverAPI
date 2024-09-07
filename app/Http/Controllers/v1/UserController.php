@@ -45,11 +45,16 @@ class UserController extends Controller
         try{
             $validator = Validator::make($request->all(), [
                 "name"     => ["required", "string", "min:4", "max:40"],
-                "phone"     => ["required", "string", "min:4", "max:40"],
+                "phone"     => ["required", "string", "min:11", "max:11"],
                 "password"  => ["required", "string", "min:4", "max:40"]
             ]);
             if($validator->fails()){
                 return $this->apiOutput($this->getValidationError($validator), 400);
+            }
+            /* Check phone number exist or not */
+            $check_phone = User::where('phone', $request->phone)->get();
+            if(!empty($check_phone)){
+                return $this->apiOutput('Phone number already exists', 409);
             }
             try{
                 DB::beginTransaction();
